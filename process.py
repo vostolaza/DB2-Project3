@@ -20,9 +20,8 @@ def buildFinalIndex(index_file,d):
     # word, data
     text=""
     for i,data in enumerate(d.items()):
-        # w = {data[0] : {}}
-        # w[data[0]]["vector"] = data[1]
-        text+=json.dump(data,ensure_ascii=False)
+        w = [data[0],data[1]]
+        text+=json.dumps(w,ensure_ascii=False)
         text+="\n" if i!=len(d.items())-1 else ""
     outputData(index_file,text)
 
@@ -101,8 +100,7 @@ def ED(vec1, vec2):
     return math.sqrt(dist)
 
 def knnSequential(size, k, image):
-    block = 5
-    iterator =iter(pd.read_json(f"Sequential/Sequential2_{size}.json",lines=True,chunksize=block))
+    iterator =iter(pd.read_json(f"Sequential/Sequential_{size}.json",lines=True,chunksize=CHUNKSIZE))
     data=next(iterator,None) 
     
     result = []
@@ -110,17 +108,13 @@ def knnSequential(size, k, image):
     vector = face_recognition.face_encodings(picture)
     q = vector[0]
     current = -1
-    # print(data)
-    
-    # data=next(iterator,None)
-    # print(data)
     while data is not None:
         current += 1
         for i in range(data.size//2): 
-            x = block * current + i
+            x = CHUNKSIZE * current + i
             # print(x)
             if len(data[1][x]) > 0 :
-                print(x)
+                # print(x)
                 d = ED(q, data[1][x])
                 heapq.heappush(result, (-d, data[0][x] ))
                 if ( len(result ) > k):
@@ -132,8 +126,10 @@ def knnSequential(size, k, image):
     result.sort(key=lambda tup : tup[1])
     print(result)
 
+
   
+indexs=[100,200,400,800,1600,3200,6400,12800]
 
-
-#buildFiles(rootdir, 100 )
-knnSequential(100, 3, "./lfw/Phil_Mickelson/Phil_Mickelson_0001.jpg")
+for indx in indexs:
+    buildFiles(rootdir, indx )
+# knnSequential(100, 3, "./lfw/Adam_Scott/Adam_Scott_0001.jpg")
