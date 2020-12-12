@@ -101,7 +101,7 @@ def ED(vec1, vec2):
     return math.sqrt(dist)
 
 def knnSequential(size, k, image):
-    block = 21
+    block = 5
     iterator =iter(pd.read_json(f"Sequential/Sequential2_{size}.json",lines=True,chunksize=block))
     data=next(iterator,None) 
     
