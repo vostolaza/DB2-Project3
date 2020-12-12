@@ -13,16 +13,16 @@ import pandas as pd
 from rtree import index
 
 rootdir = './lfw'
-CHUNKSIZE=100
+CHUNKSIZE=5
 
 
 def buildFinalIndex(index_file,d):
     # word, data
     text=""
     for i,data in enumerate(d.items()):
-        w = {data[0] : {}}
-        w[data[0]]["vector"] = data[1]
-        text+=json.dumps(w,ensure_ascii=False)
+        # w = {data[0] : {}}
+        # w[data[0]]["vector"] = data[1]
+        text+=json.dump(data,ensure_ascii=False)
         text+="\n" if i!=len(d.items())-1 else ""
     outputData(index_file,text)
 
@@ -101,35 +101,39 @@ def ED(vec1, vec2):
     return math.sqrt(dist)
 
 def knnSequential(size, k, image):
-    iterator =iter(pd.read_json(f"Sequential/Sequential_{size}.json",lines=True,chunksize=CHUNKSIZE))
+    block = 21
+    iterator =iter(pd.read_json(f"Sequential/Sequential2_{size}.json",lines=True,chunksize=block))
     data=next(iterator,None) 
-    # print(iterator)
-    # print(data)
+    
     result = []
     picture = face_recognition.load_image_file(image)
     vector = face_recognition.face_encodings(picture)
-    q = tuple(vector[0])
-
-    while data != None:
-        for i in range(len(data)):
-            if len(data[i][1]) > 0:
-                d = ED(q, data[i][1])	
-                heapq.heappush(result, (-d, data[i][0] ))
+    q = vector[0]
+    current = -1
+    # print(data)
+    
+    # data=next(iterator,None)
+    # print(data)
+    while data is not None:
+        current += 1
+        for i in range(data.size//2): 
+            x = block * current + i
+            # print(x)
+            if len(data[1][x]) > 0 :
+                print(x)
+                d = ED(q, data[1][x])
+                heapq.heappush(result, (-d, data[0][x] ))
                 if ( len(result ) > k):
-                    heapq.heappop(result)	
-            
+                    heapq.heappop(result) 
         data = next(iterator, None)
-    
-    
+        # print(data)
+
     result = [(i, -d) for d, i in result]
     result.sort(key=lambda tup : tup[1])
+    print(result)
 
-    return result    
-    
-# sizes = [100, 200, 400, 800, 1600, 3200, 6400, 12800]
+  
 
-# for size in sizes:
-#     buildFiles("./lfw", size)
-#     break
 
-knnSequential(100, 8, "./lfw/Phil_Mickelson/Phil_Mickelson_0001.jpg")
+#buildFiles(rootdir, 100 )
+knnSequential(100, 3, "./lfw/Phil_Mickelson/Phil_Mickelson_0001.jpg")
