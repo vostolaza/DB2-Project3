@@ -1,6 +1,7 @@
 from search import knnRTree
 from flask import Flask,jsonify,render_template, request, session, Response, redirect
 from flask import send_from_directory
+import json
 # You can change this to any folder on your system
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -17,8 +18,31 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_image():
+    if 'file' not in request.files:
+        message = {'msg': 'No file part!'}
+        json_msg = json.dumps(message)
+        return Response(json_msg, status=401, mimetype="application/json")
+    
+    file = request.files['file']
+    print(file)
 
+    if file.filename == '':
+        message = {'msg': 'No image selected for uploading'}
+        json_msg = json.dumps(message)
+        return Response(json_msg, status=401, mimetype="application/json")
 
+    if file and allowed_file(file.filename):
+        print("alowed")
+        pictures = knnRTree(1260, 8, file)
+        print(pictures)
+        json_msg = json.dumps(pictures)
+        return Response(json_msg, status=201, mimetype="application/json")
+    else:
+        message = {'msg': 'Allowed image types are -> png, jpg, jpeg, gif'}
+        json_msg = json.dumps(message)
+        return Response(json_msg, status=401, mimetype="application/json")
 
 # @app.route('/', methods=['GET', 'POST'])
 # def upload_image():
