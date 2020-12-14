@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta
+      name="author"
+      content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
+    />
+    <meta name="generator" content="Jekyll v4.1.1" />
+    <title>P3</title>
+
+    <link
+      rel="canonical"
+      href="https://getbootstrap.com/docs/4.5/examples/cover/"
+    />
+
+    <!-- Bootstrap core CSS -->
+    <script src="/static/web/js/libs/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="/static/web/css/bootstrap.min.css" />
+    <script src="/static/web/js/libs/bootstrap.min.js"></script>
+    <script src="/static/web/js/index.js"></script>
+    <!-- Favicons -->
+  
+    <meta name="theme-color" content="#563d7c" />
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .btn-file {
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-file input[type=file] {
+        position: absolute;
+        top: 0;
+        right: 0;
+        min-width: 100%;
+        min-height: 100%;
+        font-size: 100px;
+        text-align: right;
+        filter: alpha(opacity=0);
+        opacity: 0;
+        background: red;
+        cursor: inherit;
+        display: block;
+      }
+      input[readonly] {
+        background-color: white !important;
+        cursor: text !important;
+      }
+      .image-grid img {
+        margin-bottom: 1rem;
+      }
+      .cover-container {
+        max-width: 60em;
+      }
+    </style>
+    
+    <!-- Custom styles for this template -->
+    <link href="/static/web/css/cover.css" rel="stylesheet" />
+    <link href="/static/web/css/jquery.growl.css" rel="stylesheet" />
+  </head>
+  <body class="text-center">
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <header class="masthead mb-auto">
+        <div class="inner">
+          <h3 class="masthead-brand">Proyecto 3</h3>
+          <nav class="nav nav-masthead justify-content-center">
+            <a class="nav-link active">Home</a>
+          </nav>
+        </div>
+      </header>
+
+      <main role="main" class="inner cover">
+        <h1 class="cover-heading">Search</h1>
+        <div class="container">
+
+          <div class="container">
+
+            <form id="imageUploadForm" action="/upload" method="POST" enctype="multipart/form-data" >
+                <div class="form-group">
+                    <div class="form-row">
+                     
+                        <div class="col">
+                              <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-primary btn-file">
+                                        Browse&hellip; <input type="file" name="file" accept="image/png, .jpeg, .jpg" multiple>
+                                    </span>
+                                </span>
+                                <input type="text" class="form-control" readonly>
+                                <select id="typeSearch" class="form-control">
+                                  <option value="1">knnRTree</option>
+                                  <option value="2">RangeRTree</option>
+                                  <option value="3">knnSequential</option>
+                                  <option value="4">RangeSequential</option>
+                                </select>
+                                <input type="number" id="kval" data-bind="value:kval" step="0.01" style="width: 10%;"/>
+                                <input type="submit" value="Cargar" class="btn btn-success btn-file"/>
+                                
+                            </div>
+
+                            <!-- <input type="file" class="btn btn-secondary" name="file" accept="image/png, .jpeg, .jpg" onchange="readURL(this);"/> -->
+                        </div> 
+                        <!-- <div class="col-6">
+                            <input type="submit" value="Cargar" class="btn btn-secondary"/>
+                        </div> -->
+                    </div>
+                </div>
+            </form>
+          </div>          
+          
+        </div>
+      </main>
+
+      <div id="searchimage"></div>
+
+      
+
+
+
+      <footer class="mastfoot mt-auto">
+        <div class="inner">
+          <p>
+         
+          </p>
+        </div>
+      </footer>
+    </div>
+    
+
+  </body>
+</html>
