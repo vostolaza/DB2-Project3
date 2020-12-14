@@ -26,7 +26,7 @@ def timeRangeSequential(size):
     toc = time.perf_counter()
     print(f"Sequential Range search with {size} elements and radius 5 finished in  {toc - tic:0.4f} seconds")
 
-sizes = [100, 200, 400, 800, 1600]
+sizes = [100, 200, 400, 800, 1600, 3200, 6400, 12800]
 
 for size in sizes:
     timeRTreeKNN(size)
