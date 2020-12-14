@@ -38,7 +38,7 @@
 | 7 | 6400 | 0.2505 seconds | 2.2272 seconds |
 | 8 | 12800 | 0.2890 seconds | 4.2251 seconds|
 
-
+![imagen1](graficarangesearch/range.png)
 
 
 
@@ -61,3 +61,4 @@
 | 8 | 12800 | 1.6106 seconds|19.3765 seconds |
 
 
+![imagen1](images/graficaknnsearch.png)
