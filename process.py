@@ -112,24 +112,93 @@ def knnSequential(size, k, image):
         current += 1
         for i in range(data.size//2): 
             x = CHUNKSIZE * current + i
-            # print(x)
             if len(data[1][x]) > 0 :
-                # print(x)
+                
                 d = ED(q, data[1][x])
                 heapq.heappush(result, (-d, data[0][x] ))
                 if ( len(result ) > k):
                     heapq.heappop(result) 
         data = next(iterator, None)
-        # print(data)
+       
 
     result = [(i, -d) for d, i in result]
     result.sort(key=lambda tup : tup[1])
     print(result)
 
 
+def RangeRTree(size, r, image):
+    
+    p = index.Property()
+    p.dimension = 128 #D
+    p.buffering_capacity = 3#M
+    p.dat_extension = 'dat'
+    p.idx_extension = 'idx'
+    idx = index.Index(f"RTree/RTree_{size}", properties=p)
+
+    picture = face_recognition.load_image_file(image)
+    vector = face_recognition.face_encodings(picture)
+
+    q = vector[0]
+    
+    bounds = []
+    bounds.extend( [ i - r for i in q ])
+    bounds.extend( [ i + r for i in q ])
+    
+    # print(bounds)
+   
+    setvectors = idx.intersection(bounds, objects=True)
+    
+    for x in setvectors:
+        line=json.loads(linecache.getline(f"Sequential/Sequential_{size}.json", x))
+        print(line[0])
+
+
+
+
+def RangeSequential(size, r, image):
+
+    iterator =iter(pd.read_json(f"Sequential/Sequential_{size}.json",lines=True,chunksize=CHUNKSIZE))
+    data=next(iterator,None) 
+    
+    result = []
+    picture = face_recognition.load_image_file(image)
+    vector = face_recognition.face_encodings(picture)
+  
+    q = vector[0]
+    
+    bounds = []
+    bounds.extend( [ i - r for i in q ])
+    bounds.extend( [ i + r for i in q ])
+
+    
+    current = -1
+    while data is not None:
+        current += 1
+        for i in range(data.size//2): 
+            x = CHUNKSIZE * current + i
+            if len(data[1][x]) > 0 :
+                flag = 1
+                for k in range(len(q)):
+                    if data[1][x][k]<bounds[k] or data[1][x][k] > bounds[k+len(q)] :
+                        flag = 0
+                        break
+                if flag == 1 : 
+                    print(data[0][x])     
+        data = next(iterator, None)
+                
+
+
+
   
 indexs=[100,200,400,800,1600,3200,6400,12800]
 
-for indx in indexs:
-    buildFiles(rootdir, indx )
+
+
+RangeSequential(100, 10, "./lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg")
+RangeRTree(100, 100, "./lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg")
+# knnRTree(6400, 8, "./lfw/Aaron_Patterson/Aaron_Patterson_0001.jpg")
+# knnSequential(200, 3, "./lfw/Aaron_Patterson/Aaron_Patterson_0001.jpg")
+
+# for indx in indexs:
+#     buildFiles(rootdir, indx )
 # knnSequential(100, 3, "./lfw/Adam_Scott/Adam_Scott_0001.jpg")
