@@ -21,15 +21,23 @@ $(function () {
         var k=$("#kval").val();
         formData.append("typesearch", option);
         formData.append('kvalue',k);
-        
+        $("#idtime").text("");
+        $("#searchimage").empty();
         $.ajax({
             type:'POST',
             url: $(this).attr('action'),
             data:formData,
             cache:false,
+            startTime: performance.now(),
             contentType: false,
             processData: false,
             success:function(data){
+            var time = performance.now() - this.startTime;
+            var seconds = time / 1000;
+            seconds = seconds.toFixed(3);
+            var result = 'AJAX request took ' + seconds + ' seconds to complete.';
+            $("#idtime").text( result);
+
               // $.growl.error({ message: "The kitten is attacking!" });
             //   $.growl.notice({ message: data.msg });
               // $.growl.warning({ message: "The kitten is ugly!" });
