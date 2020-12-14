@@ -1,10 +1,27 @@
 $(function () {
 
+
+
+    $("#kval").val("8");
+
+    $('#typeSearch').on('change', function() {
+        switch(this.value) {
+            case '2':$("#kval").val("5");
+            break;
+            default:$("#kval").val("8");
+            break;
+        }
+      });
+
+
     $('#imageUploadForm').on('submit',(function(e) {
         e.preventDefault();
         var formData = new FormData(this);
-        console.log(formData)
-
+        var option=$("#typeSearch").val();
+        var k=$("#kval").val();
+        formData.append("typesearch", option);
+        formData.append('kvalue',k);
+        
         $.ajax({
             type:'POST',
             url: $(this).attr('action'),
@@ -17,7 +34,71 @@ $(function () {
             //   $.growl.notice({ message: data.msg });
               // $.growl.warning({ message: "The kitten is ugly!" });
             // </script>
-                console.log(data);
+            // console.log(data);
+            $("#searchimage").empty();
+            var len=data.length;
+            var cont=0;
+            var template=''
+            template+='<div class="row">';
+            for(var i=0;i<len;i++){
+                if(cont!=3){
+                    var name=data[i].split("/")[4];
+                    template+='<div class="col-md-4">'+
+                            '<div class="thumbnail">'+
+                                '<a href="'+data[i]+'">'+
+                              '<img src="'+data[i]+'" style="width:100%">'+
+                              '<div class="caption">'+
+                                '<p>'+name+'</p>'+
+                              '</div>'+
+                            '</a>'+
+                          '</div></div>';
+                    cont+=1;
+                }else{
+                    cont=0;
+                    template+='</div>';
+                    $("#searchimage").append(template);
+                    template='';
+                    template+='<div class="row">';
+                }
+            }
+            // $.each(data, function (i, val){
+            // })
+
+
+        //     <div class="row">
+        //     <div class="col-md-4">
+        //       <div class="thumbnail">
+        //         <a href="/w3images/lights.jpg">
+        //           <img src="/w3images/lights.jpg" alt="Lights" style="width:100%">
+        //           <div class="caption">
+        //             <p>Lorem ipsum...</p>
+        //           </div>
+        //         </a>
+        //       </div>
+        //     </div>
+        //     <div class="col-md-4">
+        //       <div class="thumbnail">
+        //         <a href="/w3images/nature.jpg">
+        //           <img src="/w3images/nature.jpg" alt="Nature" style="width:100%">
+        //           <div class="caption">
+        //             <p>Lorem ipsum...</p>
+        //           </div>
+        //         </a>
+        //       </div>
+        //     </div>
+        //     <div class="col-md-4">
+        //       <div class="thumbnail">
+        //         <a href="/w3images/fjords.jpg">
+        //           <img src="/w3images/fjords.jpg" alt="Fjords" style="width:100%">
+        //           <div class="caption">
+        //             <p>Lorem ipsum...</p>
+        //           </div>
+        //         </a>
+        //       </div>
+        //     </div>
+        //   </div>
+
+
             },
             error: function(data){
             //   $.growl.error({ message: data.msg});

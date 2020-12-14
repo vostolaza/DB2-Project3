@@ -1,4 +1,4 @@
-from search import knnRTree
+from search import *
 from flask import Flask,jsonify,render_template, request, session, Response, redirect
 from flask import send_from_directory
 import json
@@ -6,7 +6,7 @@ import json
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__, template_folder= "")
-app._static_folder = "static/web"
+app._static_folder = "static"
 
 @app.route('/')
 def index():
@@ -20,13 +20,18 @@ def allowed_file(filename):
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_image():
+    # print(request.__dict__)
     if 'file' not in request.files:
         message = {'msg': 'No file part!'}
         json_msg = json.dumps(message)
         return Response(json_msg, status=401, mimetype="application/json")
     
     file = request.files['file']
-    print(file)
+    typesearch=request.form.get("typesearch")
+    kvalue=request.form.get("kvalue")
+    # pa=request.files['typesearch']
+    # print(request.files['typesearch'])
+    # print(request.files['kvalue'])
 
     if file.filename == '':
         message = {'msg': 'No image selected for uploading'}
@@ -34,8 +39,9 @@ def upload_image():
         return Response(json_msg, status=401, mimetype="application/json")
 
     if file and allowed_file(file.filename):
-        print("alowed")
-        pictures = knnRTree(1260, 8, file)
+        # print("alowed")
+        # pictures = knnRTree(12800, kvalue, file)
+        pictures=find_closest_match(file,kvalue,12800,typesearch)
         print(pictures)
         json_msg = json.dumps(pictures)
         return Response(json_msg, status=201, mimetype="application/json")
@@ -72,25 +78,38 @@ def upload_image():
 #     '''
 
 
-def find_closest_match(file_stream, k, size):
-    pictures = knnRTree(size, k, file_stream)
+def find_closest_match(file_stream, k, size,typeserach):
 
-    if not len(pictures):
-        return f'''
-        <!doctype html>
-        <title>Proyecto 3</title>
-        <h1>No se encontraron caras en la imagen ingresada<h1>
-        '''
 
-    html = ""
-    for picture in pictures:
-        print(picture)
-        html += f'<img src="{picture}">'
+    if(int(typeserach)==1):
+        pictures = knnRTree(size, int(k), file_stream)
+    elif(int(typeserach)==2):
+        pictures = RangeRTree(size, float(k), file_stream)
+    elif(int(typeserach)==3):
+        pictures = knnSequential(size, int(k), file_stream)
+    elif(int(typeserach)==4):
+        pictures = RangeSequential(size, float(k), file_stream)
+    else:
+        pictures=[]
+    return pictures
+    
 
-    return f'''
-    <!doctype html>
-    <title>Proyecto 3</title>
-    {html}
-    '''
+    # if not len(pictures):
+    #     return f'''
+    #     <!doctype html>
+    #     <title>Proyecto 3</title>
+    #     <h1>No se encontraron caras en la imagen ingresada<h1>
+    #     '''
+
+    # html = ""
+    # for picture in pictures:
+    #     print(picture)
+    #     html += f'<img src="{picture}">'
+
+    # return f'''
+    # <!doctype html>
+    # <title>Proyecto 3</title>
+    # {html}
+    # '''
 if __name__ == "__main__":
     app.run(host='127.0.0.1', port=5001, debug=False)

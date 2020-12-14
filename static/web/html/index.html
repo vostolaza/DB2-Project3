@@ -12,7 +12,7 @@
       content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
     />
     <meta name="generator" content="Jekyll v4.1.1" />
-    <title>Inverted Index</title>
+    <title>P3</title>
 
     <link
       rel="canonical"
@@ -20,10 +20,10 @@
     />
 
     <!-- Bootstrap core CSS -->
-    <script src="/static/js/libs/jquery-3.3.1.js"></script>
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
-    <script src="/static/js/libs/bootstrap.min.js"></script>
-    <script src="/static/js/index.js"></script>
+    <script src="/static/web/js/libs/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="/static/web/css/bootstrap.min.css" />
+    <script src="/static/web/js/libs/bootstrap.min.js"></script>
+    <script src="/static/web/js/index.js"></script>
     <!-- Favicons -->
   
     <meta name="theme-color" content="#563d7c" />
@@ -66,11 +66,17 @@
         background-color: white !important;
         cursor: text !important;
       }
+      .image-grid img {
+        margin-bottom: 1rem;
+      }
+      .cover-container {
+        max-width: 60em;
+      }
     </style>
     
     <!-- Custom styles for this template -->
-    <link href="/static/css/cover.css" rel="stylesheet" />
-    <link href="/static/css/jquery.growl.css" rel="stylesheet" />
+    <link href="/static/web/css/cover.css" rel="stylesheet" />
+    <link href="/static/web/css/jquery.growl.css" rel="stylesheet" />
   </head>
   <body class="text-center">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
@@ -97,12 +103,19 @@
                               <div class="input-group">
                                 <span class="input-group-btn">
                                     <span class="btn btn-primary btn-file">
-                                        Browse&hellip; <input type="file" name="file" accept="image/png, .jpeg, .jpg">
+                                        Browse&hellip; <input type="file" name="file" accept="image/png, .jpeg, .jpg" multiple>
                                     </span>
                                 </span>
                                 <input type="text" class="form-control" readonly>
+                                <select id="typeSearch" class="form-control">
+                                  <option value="1">knnRTree</option>
+                                  <option value="2">RangeRTree</option>
+                                  <option value="3">knnSequential</option>
+                                  <option value="4">RangeSequential</option>
+                                </select>
+                                <input type="number" id="kval" data-bind="value:kval" step="0.01" style="width: 10%;"/>
                                 <input type="submit" value="Cargar" class="btn btn-success btn-file"/>
-
+                                
                             </div>
 
                             <!-- <input type="file" class="btn btn-secondary" name="file" accept="image/png, .jpeg, .jpg" onchange="readURL(this);"/> -->
@@ -113,23 +126,26 @@
                     </div>
                 </div>
             </form>
-          </div>           
-
-            <!--aqui va el twiter form-->
+          </div>          
+          
         </div>
       </main>
+
+      <div id="searchimage"></div>
+
+      
 
 
 
       <footer class="mastfoot mt-auto">
         <div class="inner">
           <p>
-            <!-- Cover template for
-            <a href="https://getbootstrap.com/">Bootstrap</a>, by
-            <a href="https://twitter.com/mdo">@mdo</a>. -->
+         
           </p>
         </div>
       </footer>
     </div>
+    
+
   </body>
 </html>
