@@ -66,7 +66,12 @@ def knnSequential(size, k, image):
 
     result = [(i, -d) for d, i in result]
     result.sort(key=lambda tup : tup[1])
-    return result
+    resul1= Extract(result)
+    return resul1
+
+
+def Extract(lst): 
+    return [item[0] for item in lst] 
 
 def RangeSequential(size, r, image):
 

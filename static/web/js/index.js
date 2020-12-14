@@ -41,17 +41,18 @@ $(function () {
             var template=''
             template+='<div class="row">';
             for(var i=0;i<len;i++){
+                var name=data[i].split("/")[4];
+                tmp='<div class="col-md-4">'+
+                '<div class="thumbnail">'+
+                    '<a href="'+data[i]+'">'+
+                  '<img src="'+data[i]+'" style="width:100%">'+
+                  '<div class="caption">'+
+                    '<p>'+name+'</p>'+
+                  '</div>'+
+                '</a>'+
+              '</div></div>';
                 if(cont!=3){
-                    var name=data[i].split("/")[4];
-                    template+='<div class="col-md-4">'+
-                            '<div class="thumbnail">'+
-                                '<a href="'+data[i]+'">'+
-                              '<img src="'+data[i]+'" style="width:100%">'+
-                              '<div class="caption">'+
-                                '<p>'+name+'</p>'+
-                              '</div>'+
-                            '</a>'+
-                          '</div></div>';
+                    template+=tmp
                     cont+=1;
                 }else{
                     cont=0;
@@ -59,46 +60,15 @@ $(function () {
                     $("#searchimage").append(template);
                     template='';
                     template+='<div class="row">';
+                    template+=tmp;
+                    cont+=1;
                 }
+                if(i+1==len){
+                    template+='</div>';
+                    $("#searchimage").append(template);
+                }
+
             }
-            // $.each(data, function (i, val){
-            // })
-
-
-        //     <div class="row">
-        //     <div class="col-md-4">
-        //       <div class="thumbnail">
-        //         <a href="/w3images/lights.jpg">
-        //           <img src="/w3images/lights.jpg" alt="Lights" style="width:100%">
-        //           <div class="caption">
-        //             <p>Lorem ipsum...</p>
-        //           </div>
-        //         </a>
-        //       </div>
-        //     </div>
-        //     <div class="col-md-4">
-        //       <div class="thumbnail">
-        //         <a href="/w3images/nature.jpg">
-        //           <img src="/w3images/nature.jpg" alt="Nature" style="width:100%">
-        //           <div class="caption">
-        //             <p>Lorem ipsum...</p>
-        //           </div>
-        //         </a>
-        //       </div>
-        //     </div>
-        //     <div class="col-md-4">
-        //       <div class="thumbnail">
-        //         <a href="/w3images/fjords.jpg">
-        //           <img src="/w3images/fjords.jpg" alt="Fjords" style="width:100%">
-        //           <div class="caption">
-        //             <p>Lorem ipsum...</p>
-        //           </div>
-        //         </a>
-        //       </div>
-        //     </div>
-        //   </div>
-
-
             },
             error: function(data){
             //   $.growl.error({ message: data.msg});
