@@ -23,6 +23,7 @@
 
 ## Pruebas Funcionales KNN Search
 
+Para las pruebas funconales del KNN Search, la variable k tomó el valor de 8 . Se hizo el testing para cada tamano de imagenes, luego se grafico los tiempos del KNN tree y KNN Sequential
 
 
 
@@ -44,10 +45,13 @@
 
 ## Pruebas Funcionales Range Search
 
+
+
+
 ![imagen1](images/range.jpg)
 
 
-
+Para las pruebas funconales del KNN Search, la variable r tomó el valor de 5 . Se hizo el testing para tamano de imagenes, luego se grafico los tiempos del Range tree y Range Sequential 
 
 | Test  | Size  |Range - Rtree | Range - Secuencial| 
 | :------------ |:---------------:| -----:| ------:|
