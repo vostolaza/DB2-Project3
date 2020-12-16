@@ -15,6 +15,8 @@
 
 ## RTree
 
+Con las ayuda de la libreria Rtree creamos los indices Rtree para cada muestra de archivo. La funcion para crear los indexfiles se llama `buildFinalIndex` se encuentra dentro del archivo build.py y va a generar los archivos Rtree_{size}.idx. Estos archivos serviran para cargar el Rtree a memoria al momento de realizar las busquedas 
+
 ![imagen1](images/rtree.png)
 
 
